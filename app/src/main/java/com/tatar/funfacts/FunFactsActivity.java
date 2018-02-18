@@ -14,6 +14,9 @@ public class FunFactsActivity extends AppCompatActivity {
 
     public static final String TAG = FunFactsActivity.class.getSimpleName();
 
+    private static final String KEY_FACT = "KEY_FACT";
+    private static final String KEY_COLOR = "KEY_COLOR";
+
     // view variables
     private RelativeLayout container;
     private TextView funcFactTextView;
@@ -22,6 +25,9 @@ public class FunFactsActivity extends AppCompatActivity {
     // providers
     private FactProvider factProvider = new FactProvider();
     private ColorProvider colorProvider = new ColorProvider();
+
+    private String fact = factProvider.facts[0];
+    private int color = Color.parseColor(colorProvider.colors[8]);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,17 +43,36 @@ public class FunFactsActivity extends AppCompatActivity {
         showFunFactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                funcFactTextView.setText(factProvider.getRandomFact());
 
-                int randomColor = Color.parseColor(colorProvider.getRandomColor());
+                fact = factProvider.getRandomFact();
+                funcFactTextView.setText(fact);
 
-                container.setBackgroundColor(randomColor);
-                showFunFactButton.setTextColor(randomColor);
-
-                //Toast.makeText(FunFactsActivity.this, "This is a toast message", Toast.LENGTH_SHORT).show();
+                color = Color.parseColor(colorProvider.getRandomColor());
+                container.setBackgroundColor(color);
+                showFunFactButton.setTextColor(color);
             }
         });
 
         Log.d(TAG, "Logs from onCreate()");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString(KEY_FACT, fact);
+        outState.putInt(KEY_COLOR, color);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        fact = savedInstanceState.getString(KEY_FACT);
+        funcFactTextView.setText(fact);
+
+        color = savedInstanceState.getInt(KEY_COLOR);
+        container.setBackgroundColor(color);
+        showFunFactButton.setTextColor(color);
     }
 }

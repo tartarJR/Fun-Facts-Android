@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class ColorProvider {
 
-    public String[] colors = {
+    public final String[] colors = {
             "#39add1", // light blue
             "#3079ab", // dark blue
             "#c25975", // mauve
